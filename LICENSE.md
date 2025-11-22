@@ -1,7 +1,7 @@
 The MIT License (MIT)
 =====================
 
-Copyright © `2021` `DEV.ME`
+Copyright © `2021` `EMAIL-CHECK.APP`
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation

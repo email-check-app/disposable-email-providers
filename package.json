@@ -1,0 +1,17 @@
+{
+  "name": "@emailcheck/disposable-email-providers",
+  "version": "1.0.0",
+  "description": "A list of Disposable email providers in JSON format",
+  "keywords": [
+    "email",
+    "disposable",
+    "providers"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/email-check-app/disposable-email-providers"
+  },
+  "license": "MIT",
+  "author": "EMAIL-CHECK.APP <support@email-check.app> (https://email-check.app)",
+  "packageManager": "yarn@1.22.22"
+}
