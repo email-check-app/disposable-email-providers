@@ -1,6 +1,7 @@
 {
   "name": "@emailcheck/disposable-email-providers",
   "version": "1.0.0",
+  "private": false,
   "description": "A list of Disposable email providers in JSON format",
   "keywords": [
     "email",
