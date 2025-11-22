@@ -19,10 +19,10 @@ This repository maintains an extensive, regularly updated list of disposable/tem
 
 - **Total Domains**: 259,095+ unique disposable email domains
 - **JSON Format**: 169,981 structured entries
-- **Text Format**: Simple domain list for easy integration
 - **Regular Updates**: Frequently maintained with new providers
+- **NPM Package**: Available as `@emailcheck/disposable-email-providers`
 
-## 📁 Available Formats
+## 📁 Available Data
 
 ### JSON Format
 ```bash
@@ -43,10 +43,19 @@ function isDisposable(email) {
 }
 ```
 
-**Usage Example:**
+### NPM Package Installation
 ```bash
-# Quick check using grep
-grep -q "domain.com" list.txt && echo "Disposable" || echo "Valid"
+npm install @emailcheck/disposable-email-providers
+```
+
+**Usage with NPM:**
+```javascript
+const disposableDomains = require('@emailcheck/disposable-email-providers');
+
+function isDisposable(email) {
+  const domain = email.split('@')[1].toLowerCase();
+  return disposableDomains.includes(domain);
+}
 ```
 
 ## 🚀 Quick Start
@@ -148,10 +157,11 @@ const response = await fetch('https://api.email-check.app/validate', {
 const result = await response.json();
 ```
 
-### Express.js Middleware (Manual Implementation)
+### Express.js Middleware
+**Using NPM Package:**
 ```javascript
 const express = require('express');
-const disposableDomains = require('./disposable-email-providers.json');
+const disposableDomains = require('@emailcheck/disposable-email-providers');
 
 const app = express();
 
@@ -172,6 +182,26 @@ app.post('/register', (req, res) => {
 });
 ```
 
+**Using Local File:**
+```javascript
+const express = require('express');
+const fs = require('fs');
+const disposableDomains = JSON.parse(fs.readFileSync('./disposable-email-providers.json', 'utf8'));
+
+const app = express();
+
+// Middleware to block disposable emails
+app.use((req, res, next) => {
+  if (req.body.email) {
+    const domain = req.body.email.split('@')[1]?.toLowerCase();
+    if (disposableDomains.includes(domain)) {
+      return res.status(400).json({ error: 'Disposable email addresses are not allowed' });
+    }
+  }
+  next();
+});
+```
+
 ### Laravel Validation Rule
 ```php
 <?php
@@ -185,7 +215,12 @@ class NotDisposableEmail implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        // Using local file
         $disposableDomains = json_decode(file_get_contents(storage_path('app/disposable-email-providers.json')), true);
+
+        // Or using NPM package data (if you have it published)
+        // $disposableDomains = include base_path('vendor/emailcheck/disposable-email-providers/disposable-email-providers.json');
+
         $domain = strtolower(substr(strrchr($value, '@'), 1));
 
         if (in_array($domain, $disposableDomains)) {
@@ -216,7 +251,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 1. Fork this repository
 2. Create a feature branch (`git checkout -b feature/new-providers`)
-3. Add your changes to the json file
+3. Add your changes to the disposable-email-providers.json file
 4. Commit your changes (`git commit -m 'Add new disposable email providers'`)
 5. Push to the branch (`git push origin feature/new-providers`)
 6. Open a Pull Request
